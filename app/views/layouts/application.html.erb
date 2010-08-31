@@ -1,0 +1,33 @@
+<html>
+  <head>
+<title> <%= @pagetitle %> </title>
+<%= javascript_include_tag :defaults  %>
+<%= stylesheet_link_tag 'scaffold'  %>
+  </head>
+  
+  <body>
+    <ul>
+<% @tabs.each do |page| -%>
+      <li <%= "id='current'" if @page && (@page == page || @page.parent == page) %>>
+        <% if page.redirect? %>
+  <%= link_to page.navlabel, :action => page.action_name, :controller => page.controller_name, :name => page.name %>
+<% else %>
+  <%= link_to page.navlabel, view_page_path(page.name) %>
+<% end %>
+
+      </li>
+<% end -%>
+      <li>
+        <% if logged_in? %>
+          <%= link_to 'Logout', logout_path  %>
+
+        <%  else %>
+        <%= link_to 'Login', login_path %>
+        <% end %>
+      </li>
+    </ul>
+    <h2><%= flash[:notice] %></h2>
+    <%= yield %>
+  </body>
+
+</html>
